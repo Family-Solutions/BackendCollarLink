@@ -5,6 +5,6 @@ import org.backendcollarlink.geofences.interfaces.rest.resources.UpdateGeofenceR
 
 public class UpdateGeofenceCommandFromResourceAssembler {
     public static UpdateGeofenceCommand toCommandFromResource(Long geofenceId,UpdateGeofenceResource resource) {
-        return new UpdateGeofenceCommand(geofenceId, resource.latitude(), resource.longitude(), resource.radius());
+        return new UpdateGeofenceCommand(geofenceId, resource.name(), resource.latitude(), resource.longitude(), resource.radius());
     }
 }

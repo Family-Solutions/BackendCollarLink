@@ -5,6 +5,6 @@ import org.backendcollarlink.geofences.interfaces.rest.resources.CreateGeofenceR
 
 public class CreateGeofenceCommandFromResourceAssembler {
     public static CreateGeofenceCommand toCommandFromResource(CreateGeofenceResource resource) {
-        return new CreateGeofenceCommand(resource.latitude(), resource.longitude(), resource.radius(), resource.username());
+        return new CreateGeofenceCommand(resource.name(), resource.latitude(), resource.longitude(), resource.radius(), resource.username());
     }
 }

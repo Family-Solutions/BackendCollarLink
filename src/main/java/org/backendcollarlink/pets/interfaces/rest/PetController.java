@@ -9,16 +9,17 @@ import org.backendcollarlink.pets.domain.services.PetCommandService;
 import org.backendcollarlink.pets.domain.services.PetQueryService;
 import org.backendcollarlink.pets.interfaces.rest.resources.CreatePetResource;
 import org.backendcollarlink.pets.interfaces.rest.resources.PetResource;
+import org.backendcollarlink.pets.interfaces.rest.resources.UpdatePetCollarResource;
 import org.backendcollarlink.pets.interfaces.rest.resources.UpdatePetResource;
 import org.backendcollarlink.pets.interfaces.rest.transform.CreatePetCommandFromResourceAssembler;
 import org.backendcollarlink.pets.interfaces.rest.transform.PetResourceFromEntityAssembler;
+import org.backendcollarlink.pets.interfaces.rest.transform.UpdatePetCollarCommandFromResourceAssembler;
 import org.backendcollarlink.pets.interfaces.rest.transform.UpdatePetCommandFromResourceAssembler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -52,12 +53,12 @@ public class PetController {
         return ResponseEntity.ok(petResource);
     }
 
-    @PutMapping("/{petId}")
-    public ResponseEntity<PetResource> updatePetCollar(@PathVariable Long petId, @RequestBody UpdatePetResource resource) {
-        var updatePetCommand = UpdatePetCommandFromResourceAssembler.toCommandFromResource(petId, resource);
-        var updatePet = petCommandService.handle(updatePetCommand);
-        if(updatePet.isEmpty()) return ResponseEntity.badRequest().build();
-        var petResource = PetResourceFromEntityAssembler.toResourceFromEntity(updatePet.get());
+    @PutMapping("/updatePetCollar/{petId}")
+    public ResponseEntity<PetResource> updatePetCollar(@PathVariable Long petId, @RequestBody UpdatePetCollarResource resource) {
+        var updatePetCollarCommand = UpdatePetCollarCommandFromResourceAssembler.toCommandFromResource(petId, resource);
+        var updatePetCollar = petCommandService.handle(updatePetCollarCommand);
+        if(updatePetCollar.isEmpty()) return ResponseEntity.badRequest().build();
+        var petResource = PetResourceFromEntityAssembler.toResourceFromEntity(updatePetCollar.get());
         return ResponseEntity.ok(petResource);
     }
 

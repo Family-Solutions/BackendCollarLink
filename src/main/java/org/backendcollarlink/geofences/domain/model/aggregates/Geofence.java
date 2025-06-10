@@ -19,6 +19,9 @@ public class Geofence extends AuditableAbstractAggregateRoot<Geofence> {
     private User user;
 
     @NotBlank
+    private String name;
+
+    @NotBlank
     private double latitude;
 
     @NotBlank
@@ -27,14 +30,16 @@ public class Geofence extends AuditableAbstractAggregateRoot<Geofence> {
     @NotBlank
     private double radius;
 
-    public Geofence(double latitude, double longitude, double radius, User user) {
+    public Geofence(String name, double latitude, double longitude, double radius, User user) {
+        this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
         this.radius = radius;
         this.user = user;
     }
 
-    public Geofence UpdateInformation(double latitude, double longitude, double radius) {
+    public Geofence UpdateInformation(String name, double latitude, double longitude, double radius) {
+        this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
         this.radius = radius;

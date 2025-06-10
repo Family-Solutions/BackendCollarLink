@@ -28,7 +28,7 @@ public class GeofenceCommandServiceImpl implements GeofenceCommandService {
         if (user.isEmpty()) {
             throw new IllegalArgumentException("User not found");
         }
-        Geofence geofence = new Geofence(command.longitude(), command.latitude(), command.radius(), user.get());
+        Geofence geofence = new Geofence(command.name(), command.longitude(), command.latitude(), command.radius(), user.get());
         geofenceRepository.save(geofence);
         return geofenceRepository.findById(geofence.getId());
     }
@@ -39,7 +39,7 @@ public class GeofenceCommandServiceImpl implements GeofenceCommandService {
         if (result.isEmpty()) {throw new IllegalArgumentException("Geofence not found");}
         var geofenceToUpdate = result.get();
         try {
-            var updateGeofence = geofenceRepository.save(geofenceToUpdate.UpdateInformation(command.latitude(), command.longitude(), command.radius()));
+            var updateGeofence = geofenceRepository.save(geofenceToUpdate.UpdateInformation(command.name(), command.latitude(), command.longitude(), command.radius()));
             return Optional.of(updateGeofence);
         }catch (Exception e) {
             throw new IllegalArgumentException("Error while updating geofence: " + e.getMessage());

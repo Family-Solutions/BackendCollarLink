@@ -4,6 +4,8 @@ import jakarta.validation.constraints.NotNull;
 import org.backendcollarlink.geofences.domain.model.aggregates.Geofence;
 
 public record CreateGeofenceResource(@NotNull
+                                     String name,
+                                     @NotNull
                                      Double latitude,
                                      @NotNull
                                      Double longitude,

@@ -5,6 +5,6 @@ import org.backendcollarlink.geofences.interfaces.rest.resources.GeofenceResourc
 
 public class GeofenceResourceFromEntityAssembler {
     public static GeofenceResource toResourceFromEntity(Geofence geofence) {
-        return new GeofenceResource(geofence.getId(), geofence.getLatitude(), geofence.getLongitude(), geofence.getRadius(), geofence.getUser().getUsername());
+        return new GeofenceResource(geofence.getId(), geofence.getName(), geofence.getLatitude(), geofence.getLongitude(), geofence.getRadius(), geofence.getUser().getUsername());
     }
 }

@@ -1,6 +1,5 @@
 package org.backendcollarlink.pets.applications.internal.commandservices;
 
-import org.backendcollarlink.geofences.infrastrucutre.persistence.jpa.repositories.CollarRepository;
 import org.backendcollarlink.pets.domain.model.aggregates.Collar;
 import org.backendcollarlink.pets.domain.model.aggregates.Pet;
 import org.backendcollarlink.pets.domain.model.commands.CreatePetCommand;
@@ -8,6 +7,7 @@ import org.backendcollarlink.pets.domain.model.commands.DeletePetCommand;
 import org.backendcollarlink.pets.domain.model.commands.UpdatePetCollarCommand;
 import org.backendcollarlink.pets.domain.model.commands.UpdatePetCommand;
 import org.backendcollarlink.pets.domain.services.PetCommandService;
+import org.backendcollarlink.pets.infrastructure.persistence.jpa.repositories.CollarRepository;
 import org.backendcollarlink.pets.infrastructure.persistence.jpa.repositories.PetRepository;
 import org.backendcollarlink.users.domain.model.aggregates.User;
 import org.backendcollarlink.users.infrastructure.persistence.jpa.repositories.UserRepository;
@@ -60,7 +60,7 @@ public class PetCommandServiceImpl implements PetCommandService {
         if (collar.isEmpty()) {throw new IllegalArgumentException("Collar not found");}
         var petToUpdate = result.get();
         try{
-            var updatePet = petRepository.save(petToUpdate.UpdateCollar(collar));
+            var updatePet = petRepository.save(petToUpdate.UpdateCollar(collar.get()));
             return Optional.of(updatePet);
         }catch (Exception e){
             throw new IllegalArgumentException("Error while updating pet: " + e.getMessage());
