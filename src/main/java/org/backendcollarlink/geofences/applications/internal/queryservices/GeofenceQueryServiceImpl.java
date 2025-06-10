@@ -5,10 +5,12 @@ import org.backendcollarlink.geofences.domain.model.queries.GetAllGeofencesByUse
 import org.backendcollarlink.geofences.domain.model.queries.GetGeofenceByIdQuery;
 import org.backendcollarlink.geofences.domain.services.GeofenceQueryService;
 import org.backendcollarlink.geofences.infrastrucutre.persistence.jpa.repositories.GeofenceRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class GeofenceQueryServiceImpl implements GeofenceQueryService {
     private final GeofenceRepository geofenceRepository;
 
@@ -18,7 +20,7 @@ public class GeofenceQueryServiceImpl implements GeofenceQueryService {
 
     @Override
     public List<Geofence> handle(GetAllGeofencesByUsernameQuery query) {
-        return geofenceRepository.findAllByUsername(query.username());
+        return geofenceRepository.findAllByUserUsername(query.username());
     }
 
     @Override

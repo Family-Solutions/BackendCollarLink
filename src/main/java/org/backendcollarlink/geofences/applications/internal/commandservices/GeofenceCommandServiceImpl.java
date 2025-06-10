@@ -8,9 +8,11 @@ import org.backendcollarlink.geofences.domain.services.GeofenceCommandService;
 import org.backendcollarlink.geofences.infrastrucutre.persistence.jpa.repositories.GeofenceRepository;
 import org.backendcollarlink.users.domain.model.aggregates.User;
 import org.backendcollarlink.users.infrastructure.persistence.jpa.repositories.UserRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@Service
 public class GeofenceCommandServiceImpl implements GeofenceCommandService {
     private final UserRepository userRepository;
     private final GeofenceRepository geofenceRepository;

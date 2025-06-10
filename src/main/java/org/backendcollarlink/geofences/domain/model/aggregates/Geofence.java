@@ -14,8 +14,8 @@ import org.backendcollarlink.users.domain.model.aggregates.User;
 public class Geofence extends AuditableAbstractAggregateRoot<Geofence> {
     @Getter
     @NotBlank
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "username")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "username", referencedColumnName = "username")
     private User user;
 
     @NotBlank
