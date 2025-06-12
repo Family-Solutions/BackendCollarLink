@@ -15,7 +15,7 @@ public class Pet extends AuditableAbstractAggregateRoot<Pet> {
     @Getter
     @NotBlank
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "username", referencedColumnName = "username")
+    @JoinColumn(name = "user_username", referencedColumnName = "username")
     private User user;
 
     @Nullable

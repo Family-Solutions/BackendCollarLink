@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface CollarRepository extends JpaRepository<Collar, Long> {
-    Optional<Collar> findByPetId(Long petId);
+    Optional<Collar> findByUserUsername(String username);
 }

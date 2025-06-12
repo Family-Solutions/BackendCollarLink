@@ -3,7 +3,7 @@ package org.backendcollarlink.pets.interfaces.rest;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.backendcollarlink.pets.domain.model.commands.DeleteCollarCommand;
 import org.backendcollarlink.pets.domain.model.queries.GetCollarByIdQuery;
-import org.backendcollarlink.pets.domain.model.queries.GetCollarByPetIdQuery;
+import org.backendcollarlink.pets.domain.model.queries.GetCollarByUserUsernameQuery;
 import org.backendcollarlink.pets.domain.services.CollarCommandService;
 import org.backendcollarlink.pets.domain.services.CollarQueryService;
 import org.backendcollarlink.pets.interfaces.rest.resources.CollarResource;
@@ -65,9 +65,9 @@ public class CollarController {
         return ResponseEntity.ok(collarResource);
     }
 
-    @GetMapping("/petId/{petId}")
-    public ResponseEntity<CollarResource> getCollarByPetById(@PathVariable Long petId) {
-        var getCollarByPetIdQuery = new GetCollarByPetIdQuery(petId);
+    @GetMapping("/username/{username}")
+    public ResponseEntity<CollarResource> getCollarByUserByUsername(@PathVariable String username) {
+        var getCollarByPetIdQuery = new GetCollarByUserUsernameQuery(username);
         var collar = collarQueryService.handle(getCollarByPetIdQuery);
         if(collar.isEmpty()) return ResponseEntity.notFound().build();
         var collarResource = CollarResourceFromEntityAssembler.toResourceFromEntity(collar.get());

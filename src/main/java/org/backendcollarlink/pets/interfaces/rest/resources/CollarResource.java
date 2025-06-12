@@ -1,7 +1,9 @@
 package org.backendcollarlink.pets.interfaces.rest.resources;
 
 public record CollarResource(Long id,
-                             Long petId,
+                             String username,
                              Long serialNumber,
-                             String model) {
+                             String model,
+                             Double lastLatitude,
+                             Double lastLongitude) {
 }

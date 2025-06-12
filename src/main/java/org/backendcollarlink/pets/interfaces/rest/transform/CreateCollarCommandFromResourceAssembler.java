@@ -5,6 +5,6 @@ import org.backendcollarlink.pets.interfaces.rest.resources.CreateCollarResource
 
 public class CreateCollarCommandFromResourceAssembler {
     public static CreateCollarCommand toCommandFromResource(CreateCollarResource resource) {
-        return new CreateCollarCommand(resource.petId(), resource.serialNumber(), resource.model());
+        return new CreateCollarCommand(resource.username(), resource.serialNumber(), resource.model(), resource.lastLatitude(), resource.lastLongitude());
     }
 }

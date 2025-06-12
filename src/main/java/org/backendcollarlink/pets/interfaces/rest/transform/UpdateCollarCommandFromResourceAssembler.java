@@ -5,6 +5,6 @@ import org.backendcollarlink.pets.interfaces.rest.resources.UpdateCollarResource
 
 public class UpdateCollarCommandFromResourceAssembler {
     public static UpdateCollarCommand toCommandFromResource(Long collarId, UpdateCollarResource resource) {
-        return new UpdateCollarCommand(collarId, resource.petId(), resource.serialNumber(), resource.model());
+        return new UpdateCollarCommand(collarId, resource.username(), resource.serialNumber(), resource.model(), resource.lastLatitude(), resource.lastLongitude());
     }
 }

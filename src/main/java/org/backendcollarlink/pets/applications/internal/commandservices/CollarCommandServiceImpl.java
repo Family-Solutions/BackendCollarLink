@@ -8,6 +8,8 @@ import org.backendcollarlink.pets.domain.model.commands.UpdateCollarCommand;
 import org.backendcollarlink.pets.domain.services.CollarCommandService;
 import org.backendcollarlink.pets.infrastructure.persistence.jpa.repositories.CollarRepository;
 import org.backendcollarlink.pets.infrastructure.persistence.jpa.repositories.PetRepository;
+import org.backendcollarlink.users.domain.model.aggregates.User;
+import org.backendcollarlink.users.infrastructure.persistence.jpa.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -15,17 +17,17 @@ import java.util.Optional;
 @Service
 public class CollarCommandServiceImpl implements CollarCommandService {
     private final CollarRepository collarRepository;
-    private final PetRepository petRepository;
+    private final UserRepository userRepository;
 
-    public CollarCommandServiceImpl(CollarRepository collarRepository, PetRepository petRepository) {
+    public CollarCommandServiceImpl(CollarRepository collarRepository, UserRepository userRepository) {
         this.collarRepository = collarRepository;
-        this.petRepository = petRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
     public Optional<Collar> handle(CreateCollarCommand command) {
-        Optional<Pet> pet = petRepository.findById(command.petId());
-        Collar collar = new Collar(pet.get(), command.serialNumber(), command.model());
+        Optional<User> user = userRepository.findByUsername(command.username());
+        Collar collar = new Collar(user.get(), command.serialNumber(), command.model(), command.lastLatitude(), command.lastLongitude());
         collarRepository.save(collar);
         return collarRepository.findById(collar.getId());
     }
@@ -34,10 +36,10 @@ public class CollarCommandServiceImpl implements CollarCommandService {
     public Optional<Collar> handle(UpdateCollarCommand command) {
         var result = collarRepository.findById(command.id());
         if (result.isEmpty()) {throw new IllegalArgumentException("Collar not found");}
-        var pet = petRepository.findById(command.petId());
+        var user = userRepository.findByUsername(command.username());
         var collarToUpdate = result.get();
         try{
-            var updateCollar = collarRepository.save(collarToUpdate.UpdateInformation(pet.get(), command.serialNumber(), command.model()));
+            var updateCollar = collarRepository.save(collarToUpdate.UpdateInformation(user.get(), command.serialNumber(), command.model(), command.lastLatitude(), command.lastLongitude()));
             return Optional.of(updateCollar);
         }catch (Exception e) {
             throw new IllegalArgumentException("Error while updating collar: " + e.getMessage());

@@ -2,7 +2,7 @@ package org.backendcollarlink.pets.applications.internal.queryservices;
 
 import org.backendcollarlink.pets.domain.model.aggregates.Collar;
 import org.backendcollarlink.pets.domain.model.queries.GetCollarByIdQuery;
-import org.backendcollarlink.pets.domain.model.queries.GetCollarByPetIdQuery;
+import org.backendcollarlink.pets.domain.model.queries.GetCollarByUserUsernameQuery;
 import org.backendcollarlink.pets.domain.services.CollarQueryService;
 import org.backendcollarlink.pets.infrastructure.persistence.jpa.repositories.CollarRepository;
 import org.springframework.stereotype.Service;
@@ -23,7 +23,7 @@ public class CollarQueryServiceImpl implements CollarQueryService {
     }
 
     @Override
-    public Optional<Collar> handle(GetCollarByPetIdQuery query){
-        return collarRepository.findById(query.petId());
+    public Optional<Collar> handle(GetCollarByUserUsernameQuery query){
+        return collarRepository.findByUserUsername(query.username());
     }
 }

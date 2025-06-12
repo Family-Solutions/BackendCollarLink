@@ -10,6 +10,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import org.backendcollarlink.shared.domain.model.aggregates.AuditableAbstractAggregateRoot;
+import org.backendcollarlink.users.domain.model.aggregates.User;
 
 @Getter
 @Setter
@@ -17,8 +18,8 @@ import org.backendcollarlink.shared.domain.model.aggregates.AuditableAbstractAgg
 public class Collar extends AuditableAbstractAggregateRoot<Collar> {
     @Nullable
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "pet_id")
-    private Pet pet;
+    @JoinColumn(name = "user_username")
+    private User user;
 
     @NotNull
     private Long serialNumber;
@@ -26,16 +27,24 @@ public class Collar extends AuditableAbstractAggregateRoot<Collar> {
     @NotBlank
     private String model;
 
-    public Collar(Pet pet, Long serialNumber, String model) {
-        this.pet = pet;
+    private Double lastLatitude;
+
+    private Double lastLongitude;
+
+    public Collar(User user, Long serialNumber, String model, Double lastLatitude, Double lastLongitude) {
+        this.user = user;
         this.serialNumber = serialNumber;
         this.model = model;
+        this.lastLatitude = lastLatitude;
+        this.lastLongitude = lastLongitude;
     }
 
-    public Collar UpdateInformation(Pet pet, Long serialNumber, String model) {
-        this.pet = pet;
+    public Collar UpdateInformation(User user, Long serialNumber, String model, Double lastLatitude, Double lastLongitude) {
+        this.user = user;
         this.serialNumber = serialNumber;
         this.model = model;
+        this.lastLatitude = lastLatitude;
+        this.lastLongitude = lastLongitude;
         return this;
     }
 

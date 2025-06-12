@@ -2,9 +2,11 @@ package org.backendcollarlink.pets.interfaces.rest.resources;
 
 import jakarta.validation.constraints.NotNull;
 
-public record CreateCollarResource(Long petId,
+public record CreateCollarResource(String username,
                                    @NotNull
                                    Long serialNumber,
                                    @NotNull
-                                   String model) {
+                                   String model,
+                                   Double lastLatitude,
+                                   Double lastLongitude) {
 }
