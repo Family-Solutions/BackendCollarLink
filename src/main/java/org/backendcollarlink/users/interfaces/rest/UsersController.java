@@ -3,6 +3,7 @@ package org.backendcollarlink.users.interfaces.rest;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.backendcollarlink.users.domain.model.queries.GetAllUsersQuery;
 import org.backendcollarlink.users.domain.model.queries.GetUserByIdQuery;
+import org.backendcollarlink.users.domain.model.queries.GetUserByUsernameQuery;
 import org.backendcollarlink.users.domain.services.UserQueryService;
 import org.backendcollarlink.users.interfaces.rest.resources.UserResource;
 import org.backendcollarlink.users.interfaces.rest.transform.UserResourceFromEntityAssembler;
@@ -49,6 +50,17 @@ public class UsersController {
     public ResponseEntity<UserResource> getUserById(@PathVariable Long userId) {
         var getUserByIdQuery = new GetUserByIdQuery(userId);
         var user = userQueryService.handle(getUserByIdQuery);
+        if (user.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        var userResource = UserResourceFromEntityAssembler.toResourceFromEntity(user.get());
+        return ResponseEntity.ok(userResource);
+    }
+
+    @GetMapping(value = "/{username}")
+    public ResponseEntity<UserResource> getUserByUsername(@PathVariable String username) {
+        var getUserByUsernameQuery = new GetUserByUsernameQuery(username);
+        var user = userQueryService.handle(getUserByUsernameQuery);
         if (user.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
