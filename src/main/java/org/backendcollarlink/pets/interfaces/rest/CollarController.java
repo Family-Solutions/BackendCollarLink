@@ -2,8 +2,8 @@ package org.backendcollarlink.pets.interfaces.rest;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.backendcollarlink.pets.domain.model.commands.DeleteCollarCommand;
+import org.backendcollarlink.pets.domain.model.queries.GetAllCollarsByUserUsernameQuery;
 import org.backendcollarlink.pets.domain.model.queries.GetCollarByIdQuery;
-import org.backendcollarlink.pets.domain.model.queries.GetCollarByUserUsernameQuery;
 import org.backendcollarlink.pets.domain.services.CollarCommandService;
 import org.backendcollarlink.pets.domain.services.CollarQueryService;
 import org.backendcollarlink.pets.interfaces.rest.resources.CollarResource;
@@ -16,6 +16,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "api/v1/collar", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -66,11 +68,11 @@ public class CollarController {
     }
 
     @GetMapping("/username/{username}")
-    public ResponseEntity<CollarResource> getCollarByUserByUsername(@PathVariable String username) {
-        var getCollarByPetIdQuery = new GetCollarByUserUsernameQuery(username);
-        var collar = collarQueryService.handle(getCollarByPetIdQuery);
-        if(collar.isEmpty()) return ResponseEntity.notFound().build();
-        var collarResource = CollarResourceFromEntityAssembler.toResourceFromEntity(collar.get());
+    public ResponseEntity<List<CollarResource>> getAllCollarsByUserByUsername(@PathVariable String username) {
+        var getAllCollarsByUserUsernameQuery = new GetAllCollarsByUserUsernameQuery(username);
+        var collars = collarQueryService.handle(getAllCollarsByUserUsernameQuery);
+        if(collars.isEmpty()) return ResponseEntity.notFound().build();
+        var collarResource = collars.stream().map(CollarResourceFromEntityAssembler::toResourceFromEntity).toList();
         return ResponseEntity.ok(collarResource);
     }
 }

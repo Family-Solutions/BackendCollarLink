@@ -1,10 +1,7 @@
 package org.backendcollarlink.pets.domain.model.aggregates;
 
 import jakarta.annotation.Nullable;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -17,7 +14,7 @@ import org.backendcollarlink.users.domain.model.aggregates.User;
 @Entity
 public class Collar extends AuditableAbstractAggregateRoot<Collar> {
     @Nullable
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_username")
     private User user;
 
