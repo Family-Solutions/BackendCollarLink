@@ -2,7 +2,9 @@ package org.backendcollarlink.pets.domain.model.aggregates;
 
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import org.backendcollarlink.shared.domain.model.aggregates.AuditableAbstractAggregateRoot;
@@ -13,7 +15,7 @@ import org.backendcollarlink.users.domain.model.aggregates.User;
 @Entity
 public class Pet extends AuditableAbstractAggregateRoot<Pet> {
     @Getter
-    @NotBlank
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_username", referencedColumnName = "username")
     private User user;
@@ -35,7 +37,8 @@ public class Pet extends AuditableAbstractAggregateRoot<Pet> {
     @NotBlank
     private String gender;
 
-    @NotBlank
+    @NotNull
+    @Min(value = 0, message = "La edad no puede ser negativa")
     private int age;
 
     public Pet(User user, Collar collar, String name, String species, String breed, String gender, int age) {
