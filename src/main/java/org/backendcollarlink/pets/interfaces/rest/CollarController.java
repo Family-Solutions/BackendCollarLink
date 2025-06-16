@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.backendcollarlink.pets.domain.model.commands.DeleteCollarCommand;
 import org.backendcollarlink.pets.domain.model.queries.GetAllCollarsByUserUsernameQuery;
 import org.backendcollarlink.pets.domain.model.queries.GetCollarByIdQuery;
+import org.backendcollarlink.pets.domain.model.queries.GetCollarBySerialNumberQuery;
 import org.backendcollarlink.pets.domain.services.CollarCommandService;
 import org.backendcollarlink.pets.domain.services.CollarQueryService;
 import org.backendcollarlink.pets.interfaces.rest.resources.CollarResource;
@@ -12,6 +13,7 @@ import org.backendcollarlink.pets.interfaces.rest.resources.UpdateCollarResource
 import org.backendcollarlink.pets.interfaces.rest.transform.CollarResourceFromEntityAssembler;
 import org.backendcollarlink.pets.interfaces.rest.transform.CreateCollarCommandFromResourceAssembler;
 import org.backendcollarlink.pets.interfaces.rest.transform.UpdateCollarCommandFromResourceAssembler;
+import org.backendcollarlink.pets.interfaces.rest.transform.UpdateCollarLocationCommandFromResourceAssembler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -50,6 +52,15 @@ public class CollarController {
         return ResponseEntity.ok(collarResource);
     }
 
+    @PutMapping("/updateLocation/{serialNumber}")
+    public ResponseEntity<CollarResource> updateCollarLocation(@PathVariable Long serialNumber, @RequestBody UpdateCollarResource resource) {
+        var updateCollarLocationCommand = UpdateCollarLocationCommandFromResourceAssembler.toCommandFromResource(resource);
+        var updateCollarLocation = collarCommandService.handle(updateCollarLocationCommand);
+        if(updateCollarLocation.isEmpty()) return ResponseEntity.notFound().build();
+        var collarResource = CollarResourceFromEntityAssembler.toResourceFromEntity(updateCollarLocation.get());
+        return ResponseEntity.ok(collarResource);
+    }
+
     @DeleteMapping("/{collarId}")
     public ResponseEntity<CollarResource> deleteCollar(@PathVariable Long collarId) {
         var deleteCollarCommand = new DeleteCollarCommand(collarId);
@@ -73,6 +84,15 @@ public class CollarController {
         var collars = collarQueryService.handle(getAllCollarsByUserUsernameQuery);
         if(collars.isEmpty()) return ResponseEntity.notFound().build();
         var collarResource = collars.stream().map(CollarResourceFromEntityAssembler::toResourceFromEntity).toList();
+        return ResponseEntity.ok(collarResource);
+    }
+
+    @GetMapping("/serialNumber/{serialNumber}")
+    public ResponseEntity<CollarResource> getCollarBySerialNumber(@PathVariable Long serialNumber) {
+        var getCollarBySerialNumberQuery = new GetCollarBySerialNumberQuery(serialNumber);
+        var collar = collarQueryService.handle(getCollarBySerialNumberQuery);
+        if(collar.isEmpty()) return ResponseEntity.notFound().build();
+        var collarResource = CollarResourceFromEntityAssembler.toResourceFromEntity(collar.get());
         return ResponseEntity.ok(collarResource);
     }
 }

@@ -45,5 +45,11 @@ public class Collar extends AuditableAbstractAggregateRoot<Collar> {
         return this;
     }
 
+    public Collar UpdateLocation(Double lastLatitude, Double lastLongitude) {
+        this.lastLatitude = lastLatitude;
+        this.lastLongitude = lastLongitude;
+        return this;
+    }
+
     public Collar() {}
 }

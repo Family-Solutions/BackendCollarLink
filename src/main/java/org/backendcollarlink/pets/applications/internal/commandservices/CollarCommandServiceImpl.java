@@ -1,13 +1,12 @@
 package org.backendcollarlink.pets.applications.internal.commandservices;
 
 import org.backendcollarlink.pets.domain.model.aggregates.Collar;
-import org.backendcollarlink.pets.domain.model.aggregates.Pet;
 import org.backendcollarlink.pets.domain.model.commands.CreateCollarCommand;
 import org.backendcollarlink.pets.domain.model.commands.DeleteCollarCommand;
 import org.backendcollarlink.pets.domain.model.commands.UpdateCollarCommand;
+import org.backendcollarlink.pets.domain.model.commands.UpdateCollarLocationCommand;
 import org.backendcollarlink.pets.domain.services.CollarCommandService;
 import org.backendcollarlink.pets.infrastructure.persistence.jpa.repositories.CollarRepository;
-import org.backendcollarlink.pets.infrastructure.persistence.jpa.repositories.PetRepository;
 import org.backendcollarlink.users.domain.model.aggregates.User;
 import org.backendcollarlink.users.infrastructure.persistence.jpa.repositories.UserRepository;
 import org.springframework.stereotype.Service;
@@ -57,6 +56,19 @@ public class CollarCommandServiceImpl implements CollarCommandService {
             return collarToDelete;
         }catch (Exception e) {
             throw new IllegalArgumentException("Error while deleting collar: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public Optional<Collar> handle(UpdateCollarLocationCommand command){
+        var result = collarRepository.findBySerialNumber(command.serialNumber());
+        if (result.isEmpty()) {throw new IllegalArgumentException("Collar serial number not found");}
+        var collarLocationToUpdate = result.get();
+        try{
+            var updateCollar = collarRepository.save(collarLocationToUpdate.UpdateLocation(command.lastLatitude(), command.lastLongitude()));
+            return Optional.of(updateCollar);
+        }catch (Exception e) {
+            throw new IllegalArgumentException("Error while updating collar: " + e.getMessage());
         }
     }
 }
