@@ -2,6 +2,7 @@ package org.backendcollarlink.geofences.domain.model.aggregates;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import org.backendcollarlink.geofences.domain.model.commands.CreateGeofenceCommand;
@@ -13,7 +14,7 @@ import org.backendcollarlink.users.domain.model.aggregates.User;
 @Entity
 public class Geofence extends AuditableAbstractAggregateRoot<Geofence> {
     @Getter
-    @NotBlank
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "username", referencedColumnName = "username")
     private User user;
@@ -21,13 +22,13 @@ public class Geofence extends AuditableAbstractAggregateRoot<Geofence> {
     @NotBlank
     private String name;
 
-    @NotBlank
+    @NotNull
     private double latitude;
 
-    @NotBlank
+    @NotNull
     private double longitude;
 
-    @NotBlank
+    @NotNull
     private double radius;
 
     public Geofence(String name, double latitude, double longitude, double radius, User user) {
