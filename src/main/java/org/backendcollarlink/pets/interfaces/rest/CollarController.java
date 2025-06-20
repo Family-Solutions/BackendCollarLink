@@ -9,6 +9,7 @@ import org.backendcollarlink.pets.domain.services.CollarCommandService;
 import org.backendcollarlink.pets.domain.services.CollarQueryService;
 import org.backendcollarlink.pets.interfaces.rest.resources.CollarResource;
 import org.backendcollarlink.pets.interfaces.rest.resources.CreateCollarResource;
+import org.backendcollarlink.pets.interfaces.rest.resources.UpdateCollarLocationResource;
 import org.backendcollarlink.pets.interfaces.rest.resources.UpdateCollarResource;
 import org.backendcollarlink.pets.interfaces.rest.transform.CollarResourceFromEntityAssembler;
 import org.backendcollarlink.pets.interfaces.rest.transform.CreateCollarCommandFromResourceAssembler;
@@ -52,8 +53,8 @@ public class CollarController {
         return ResponseEntity.ok(collarResource);
     }
 
-    @PutMapping("/updateLocation/{serialNumber}")
-    public ResponseEntity<CollarResource> updateCollarLocation(@PathVariable Long serialNumber, @RequestBody UpdateCollarResource resource) {
+    @PutMapping("/updateLocation")
+    public ResponseEntity<CollarResource> updateCollarLocation(@RequestBody UpdateCollarLocationResource resource) {
         var updateCollarLocationCommand = UpdateCollarLocationCommandFromResourceAssembler.toCommandFromResource(resource);
         var updateCollarLocation = collarCommandService.handle(updateCollarLocationCommand);
         if(updateCollarLocation.isEmpty()) return ResponseEntity.notFound().build();
