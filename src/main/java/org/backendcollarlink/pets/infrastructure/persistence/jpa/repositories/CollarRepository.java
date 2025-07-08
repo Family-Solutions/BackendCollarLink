@@ -8,5 +8,5 @@ import java.util.Optional;
 
 public interface CollarRepository extends JpaRepository<Collar, Long> {
     List<Collar> findAllByUserUsername(String username);
-    Optional<Collar> findBySerialNumber(Long serialNumber);
+    Optional<Collar> findBySerialNumber(String serialNumber);
 }

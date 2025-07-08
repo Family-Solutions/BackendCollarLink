@@ -89,7 +89,7 @@ public class CollarController {
     }
 
     @GetMapping("/serialNumber/{serialNumber}")
-    public ResponseEntity<CollarResource> getCollarBySerialNumber(@PathVariable Long serialNumber) {
+    public ResponseEntity<CollarResource> getCollarBySerialNumber(@PathVariable String serialNumber) {
         var getCollarBySerialNumberQuery = new GetCollarBySerialNumberQuery(serialNumber);
         var collar = collarQueryService.handle(getCollarBySerialNumberQuery);
         if(collar.isEmpty()) return ResponseEntity.notFound().build();

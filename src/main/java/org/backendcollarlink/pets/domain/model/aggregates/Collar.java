@@ -19,7 +19,7 @@ public class Collar extends AuditableAbstractAggregateRoot<Collar> {
     private User user;
 
     @NotNull
-    private Long serialNumber;
+    private String serialNumber;
 
     @NotBlank
     private String model;
@@ -28,7 +28,7 @@ public class Collar extends AuditableAbstractAggregateRoot<Collar> {
 
     private Double lastLongitude;
 
-    public Collar(User user, Long serialNumber, String model, Double lastLatitude, Double lastLongitude) {
+    public Collar(User user, String serialNumber, String model, Double lastLatitude, Double lastLongitude) {
         this.user = user;
         this.serialNumber = serialNumber;
         this.model = model;
@@ -36,7 +36,7 @@ public class Collar extends AuditableAbstractAggregateRoot<Collar> {
         this.lastLongitude = lastLongitude;
     }
 
-    public Collar UpdateInformation(User user, Long serialNumber, String model, Double lastLatitude, Double lastLongitude) {
+    public Collar UpdateInformation(User user, String serialNumber, String model, Double lastLatitude, Double lastLongitude) {
         this.user = user;
         this.serialNumber = serialNumber;
         this.model = model;

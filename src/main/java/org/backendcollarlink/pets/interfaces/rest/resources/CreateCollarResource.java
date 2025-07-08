@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotNull;
 
 public record CreateCollarResource(String username,
                                    @NotNull
-                                   Long serialNumber,
+                                   String serialNumber,
                                    @NotNull
                                    String model,
                                    Double lastLatitude,
