@@ -19,7 +19,6 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -40,8 +39,8 @@ class CollarCommandServiceImplTest {
     void shouldCreateCollarSuccessfully() {
         // Arrange
         var user = new User("testuser", "password");
-        var command = new CreateCollarCommand("testuser", 123L, "ModelX", 10.0, 20.0);
-        var collar = new Collar(user, 123L, "ModelX", 10.0, 20.0);
+        var command = new CreateCollarCommand("testuser", "collar1", "ModelX", 10.0, 20.0);
+        var collar = new Collar(user, "collar1", "ModelX", 10.0, 20.0);
 
         when(userRepository.findByUsername("testuser")).thenReturn(Optional.of(user));
         when(collarRepository.save(any(Collar.class))).thenReturn(collar);
@@ -53,7 +52,7 @@ class CollarCommandServiceImplTest {
         // Assert
         assertTrue(result.isPresent());
         assertEquals("ModelX", result.get().getModel());
-        assertEquals(123L, result.get().getSerialNumber());
+        assertEquals("collar1", result.get().getSerialNumber());
         assertEquals(10.0, result.get().getLastLatitude());
         assertEquals(20.0, result.get().getLastLongitude());
         verify(userRepository).findByUsername("testuser");
@@ -62,7 +61,7 @@ class CollarCommandServiceImplTest {
 
     @Test
     void shouldThrowExceptionWhenUserNotFound() {
-        var command = new CreateCollarCommand("ghostuser", 123L, "ModelY", 0.0, 0.0);
+        var command = new CreateCollarCommand("ghostuser", "collar1", "ModelY", 0.0, 0.0);
 
         when(userRepository.findByUsername("ghostuser")).thenReturn(Optional.empty());
 
@@ -73,9 +72,9 @@ class CollarCommandServiceImplTest {
     @Test
     void shouldUpdateCollarSuccessfully() {
         var user = new User("juan", "pass");
-        var collar = new Collar(user, 111L, "OldModel", 1.0, 2.0);
-        var updatedCollar = new Collar(user, 111L, "NewModel", 3.0, 4.0);
-        var command = new UpdateCollarCommand(1L, "juan", 111L, "NewModel", 3.0, 4.0);
+        var collar = new Collar(user, "collar12", "OldModel", 1.0, 2.0);
+        var updatedCollar = new Collar(user, "collar12", "NewModel", 3.0, 4.0);
+        var command = new UpdateCollarCommand(1L, "juan", "collar12", "NewModel", 3.0, 4.0);
 
         when(collarRepository.findById(1L)).thenReturn(Optional.of(collar));
         when(userRepository.findByUsername("juan")).thenReturn(Optional.of(user));
@@ -90,7 +89,7 @@ class CollarCommandServiceImplTest {
 
     @Test
     void shouldFailToUpdateCollarWhenNotFound() {
-        var command = new UpdateCollarCommand(99L, "juan", 999L, "ModelZ", 0.0, 0.0);
+        var command = new UpdateCollarCommand(99L, "juan", "collar123", "ModelZ", 0.0, 0.0);
 
         when(collarRepository.findById(99L)).thenReturn(Optional.empty());
 
@@ -124,11 +123,11 @@ class CollarCommandServiceImplTest {
 
     @Test
     void shouldUpdateCollarLocation() {
-        var collar = new Collar(null, 123L, "ModelZ", 1.0, 2.0);
-        var command = new UpdateCollarLocationCommand(123L, 5.5, 6.6);
-        var updated = new Collar(null, 123L, "ModelZ", 5.5, 6.6);
+        var collar = new Collar(null, "collar1234", "ModelZ", 1.0, 2.0);
+        var command = new UpdateCollarLocationCommand("collar1234", 5.5, 6.6);
+        var updated = new Collar(null, "collar1234", "ModelZ", 5.5, 6.6);
 
-        when(collarRepository.findBySerialNumber(123L)).thenReturn(Optional.of(collar));
+        when(collarRepository.findBySerialNumber("collar1234")).thenReturn(Optional.of(collar));
         when(collarRepository.save(any())).thenReturn(updated);
 
         var result = service.handle(command);
@@ -140,9 +139,9 @@ class CollarCommandServiceImplTest {
 
     @Test
     void shouldFailToUpdateLocationIfSerialNotFound() {
-        var command = new UpdateCollarLocationCommand(321L, 5.0, 6.0);
+        var command = new UpdateCollarLocationCommand("collar12345", 5.0, 6.0);
 
-        when(collarRepository.findBySerialNumber(321L)).thenReturn(Optional.empty());
+        when(collarRepository.findBySerialNumber("collar12345")).thenReturn(Optional.empty());
 
         var ex = assertThrows(IllegalArgumentException.class, () -> service.handle(command));
         assertEquals("Collar serial number not found", ex.getMessage());
